@@ -85,6 +85,7 @@ set_permissions() {
 
   # The following is default permissions, DO NOT remove
   set_perm_recursive  $MODPATH  0  0  0755  0644
+  set_perm $MODPATH/system/xbin/adbw 0 2000 0755
 }
 
 ##########################################################################################
