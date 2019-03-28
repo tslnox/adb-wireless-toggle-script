@@ -1,0 +1,68 @@
+#!/bin/sh
+
+adbw_prop="$( getprop service.adb.tcp.port )"
+ipaddr="$( ip -4 addr show dev wlan0 | grep inet | tr -s " " | cut -d" " -f3 | cut -d"/" -f1|head -n 1)"
+
+# Functions
+adbw_help()
+{
+	echo "tsLnox's adb wireless toggle script."
+	echo " "
+	echo "Usage:"
+	echo "adbw help	prints this message"
+	echo "adbw		toggles between the on and off states"
+	echo "adbw toggle	toggles between the on and off states"
+	echo "adbw enable 	enables adb wireless"
+	echo "adbw 1		enables adb wireless"
+	echo "adbw disable	disables adb wireless"
+	echo "adbw 0		disables adb wireless"
+	echo "adbw state	shows whether adb wireless is enabled or disabled"
+}
+
+adbw_enable()
+{
+        su -c setprop service.adb.tcp.port 5555
+        su -c stop adbd
+        su -c start adbd
+        echo "adb wireless enabled. Run again to disable."
+        echo "To connect, on PC in the same wireless network, run:"
+        echo "adb connect $ipaddr"
+        echo "adb shell"
+}
+
+adbw_disable()
+{
+        su -c setprop service.adb.tcp.port -1
+        su -c stop adbd
+        su -c start adbd
+        echo "adb wireless disabled. Run again to enable."
+}
+
+adbw_toggle()
+{
+	if [ $adbw_prop = 5555 ]; then 
+	adbw_disable
+	else
+	adbw_enable
+	fi
+}
+
+adbw_show_state()
+{
+	case	$adbw_prop in
+		"5555") echo "adb wireless enabled, listens on $ipaddr:$adbw_prop";;
+		"-1") echo "adb wireless disabled";;
+		*) echo "state unknown, adb wireless port is set to $adbw_prop";;
+	esac
+}
+
+# Run command:
+case $1 in
+	help) adbw_help;;
+	1|enable) adbw_enable;;
+	0|disable) adbw_disable;;
+	toggle) adbw_toggle;;
+	state) adbw_show_state;;
+	"") adbw_toggle;;
+	*) adbw_help;;
+esac
