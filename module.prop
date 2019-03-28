@@ -1,7 +1,7 @@
 id=adb-wireless-toggle
 name=tsLnox's adb wireless toggle script
-version=v1
-versionCode=1
+version=v1.1
+versionCode=11
 author=tsLnox
 description=A script that toggles adb wireless on and off
 minMagisk=17000

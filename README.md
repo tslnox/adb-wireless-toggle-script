@@ -1,8 +1,8 @@
 # Magisk Module Template
 
-**ADB Wireless toggle** is a little script that, when used, will check if adb wireless is active or not, and switch it on or off.
-Usage: adbw
+**adb wireless toggle** is a little script that can toggle adb wireless on and off and print the current state
+Use "adbw help" to show all parameters
 
-When the script toggles the adb wireless on, it prints the current IP in the shell. It uses standard 5555 port.
+When invoked without any parameters, it toggles between on and off, or you can tell it to enable or disable it regardless on the state. 
 
-If the prop service.adb.tcp.port is anything else than 5555 (enabled) or -1 (disabled), it resets it off. The prop should revert to default state on reboot and the script doesn't touch any system files, only uses getprop and setprop commands.
+The prop should revert to default state on reboot. Script doesn't touch any system files and only uses getprop and setprop commands, so it should be absolutely safe.
